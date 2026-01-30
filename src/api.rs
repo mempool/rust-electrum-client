@@ -172,6 +172,13 @@ where
         (**self).server_features()
     }
 
+    fn server_add_peer<S>(&self, features: &S) -> Result<bool, Error>
+    where
+        S: serde::Serialize,
+    {
+        (**self).server_add_peer(features)
+    }
+
     fn ping(&self) -> Result<(), Error> {
         (**self).ping()
     }
@@ -398,6 +405,11 @@ pub trait ElectrumApi {
     /// Returns the capabilities of the server.
     fn server_features(&self) -> Result<ServerFeaturesRes, Error>;
 
+    /// Announce a server to get it listed in the peer list.
+    fn server_add_peer<S>(&self, features: &S) -> Result<bool, Error>
+    where
+        S: serde::Serialize;
+
     /// Pings the server. This method can also be used as a "dummy" call to trigger the processing
     /// of incoming block header or script notifications.
     fn ping(&self) -> Result<(), Error>;
@@ -604,6 +616,13 @@ mod test {
         }
 
         fn server_features(&self) -> Result<super::ServerFeaturesRes, super::Error> {
+            unreachable!()
+        }
+
+        fn server_add_peer<S>(&self, _: &S) -> Result<bool, crate::Error>
+        where
+            S: serde::Serialize,
+        {
             unreachable!()
         }
 

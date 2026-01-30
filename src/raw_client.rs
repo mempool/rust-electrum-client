@@ -1179,6 +1179,21 @@ impl<T: Read + Write> ElectrumApi for RawClient<T> {
         Ok(serde_json::from_value(result)?)
     }
 
+    fn server_add_peer<S>(&self, features: &S) -> Result<bool, Error>
+    where
+        S: serde::Serialize,
+    {
+        let json = serde_json::to_value(features)?;
+        let req = Request::new_id(
+            self.last_id.fetch_add(1, Ordering::SeqCst),
+            "server.add_peer",
+            vec![Param::Json(json)],
+        );
+        let result = self.call(req)?;
+
+        Ok(serde_json::from_value(result)?)
+    }
+
     fn ping(&self) -> Result<(), Error> {
         let req = Request::new_id(
             self.last_id.fetch_add(1, Ordering::SeqCst),

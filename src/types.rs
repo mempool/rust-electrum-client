@@ -33,6 +33,8 @@ pub enum Param {
     Bool(bool),
     /// Bytes array parameter
     Bytes(Vec<u8>),
+    /// JSON parameter
+    Json(serde_json::Value),
 }
 
 #[derive(Serialize, Clone)]

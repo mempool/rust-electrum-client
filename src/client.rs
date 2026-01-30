@@ -368,6 +368,14 @@ impl ElectrumApi for Client {
     }
 
     #[inline]
+    fn server_add_peer<S>(&self, features: &S) -> Result<bool, Error>
+    where
+        S: serde::Serialize,
+    {
+        impl_inner_call!(self, server_add_peer, features)
+    }
+
+    #[inline]
     #[cfg(feature = "debug-calls")]
     fn calls_made(&self) -> Result<usize, Error> {
         impl_inner_call!(self, calls_made)
